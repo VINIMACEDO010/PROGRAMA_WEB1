@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biografia de Vinicius Macedo</title>
 </head>
-<main>
-    <body>
+
+<body>
+    <main>
         <h1>Vinicius Macedo</h1>
         <p>Estudante de Sistemas de Informação</p>
         <p>Olá, meu nome é Vinicius Macedo e sou um apaixonado por programação. Atualmente, estou estudando Sistemas de
@@ -17,22 +18,22 @@
             atualizado e útil para outros desenvolvedores. Estou sempre à procura de novos desafios e oportunidades para
             crescer profissionalmente.</p>
         <p>No meu tempo livre, gosto de explorar novas tecnologias, contribuir para projetos de código aberto e
-            colaborar com outros desenvolvedores em iniciativas interessantes..</p>
-</main>
-<nav>
-    <img src="imagem.png" height="350" width="350">
-    <br>
-    <button>
-
-        <a
-            href="https://www.linkedin.com/in/vinicius-policarpo-macedo-a1327121b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app/">
-            <h2>Meu LinkedIn</h2>
-        </a>
-    </button>
-    <br>
-    <iframe width="800" height="500" src="https://www.youtube.com/embed/qk7pZnxCX2o" frameborder="0"
-        allowfullscreen></iframe>
-    </body>
-</nav>
+            colaborar com outros desenvolvedores em iniciativas interessantes.</p>
+    </main>
+    
+    <nav>
+        <img src="imagem.png" height="350" width="350" alt="Imagem de Vinicius Macedo">
+        <br>
+        <button>
+            <a
+                href="https://www.linkedin.com/in/vinicius-policarpo-macedo-a1327121b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app/">
+                <h2>Meu LinkedIn</h2>
+            </a>
+        </button>
+        <br>
+        <iframe width="800" height="500" src="https://www.youtube.com/embed/qk7pZnxCX2o" frameborder="0"
+            allowfullscreen></iframe>
+    </nav>
+</body>
 
 </html>
