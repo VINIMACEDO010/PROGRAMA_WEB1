@@ -1,18 +1,110 @@
-li#dados{
-    background-color: red;
- }
- 
- 
- li#campo {
-    background-color: rgb(217, 255, 0);
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+fieldset.pessoa {
+    border: none;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+li {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="color"],
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+li#dados {
+    background-color: rgba(255, 0, 0, 0.2); /* Suavizando a cor */
+    padding: 10px;
+    border-radius: 4px;
+}
+
+li#campo {
+    background-color: rgba(217, 255, 0, 0.2); /* Suavizando a cor */
+    padding: 10px;
+    border-radius: 4px;
 }
 
 li#endereco {
-    background-color: rgb(217, 255, 0);
+    background-color: rgba(217, 255, 0, 0.2); /* Suavizando a cor */
+    padding: 10px;
+    border-radius: 4px;
 }
 
-li{
-    list-style: none;
-    margin: 0;
-    padding: 0;
+input[type="submit"],
+input[type="reset"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 48%;
+    margin-right: 2%;
+    box-sizing: border-box;
+}
+
+input[type="reset"] {
+    background-color: #f44336;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+input[type="reset"]:hover {
+    background-color: #e53935;
+}
+
+input[type="submit"]:last-of-type {
+    margin-right: 0;
 }
