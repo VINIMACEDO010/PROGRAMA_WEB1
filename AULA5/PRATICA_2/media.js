@@ -1,79 +1,80 @@
-// Função para calcular a média das notas por coluna
-function calcularMediaNotas() {
-    const tabela = document.getElementById('tabelaNotas');
-    const linhas = tabela.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-    const colunas = linhas[0].getElementsByClassName('nota').length;
-
-    const somaNotas = Array(colunas).fill(0);
-    const contagemNotas = Array(colunas).fill(0);
-
-    for (let i = 0; i < linhas.length; i++) {
-        const inputs = linhas[i].getElementsByClassName('nota');
-        for (let j = 0; j < inputs.length; j++) {
-            const valor = parseFloat(inputs[j].value);
-            if (!isNaN(valor)) {
-                somaNotas[j] += valor;
-                contagemNotas[j]++;
-            }
-        }
-    }
-
-    const mediaNotas = somaNotas.map((soma, index) => contagemNotas[index] > 0 ? soma / contagemNotas[index] : 0);
-    return mediaNotas;
-}
-
-// Função para adicionar a linha totalizadora com a média das matérias
 function adicionarLinhaTotalizadora() {
     const tabela = document.getElementById('tabelaNotas');
-    const tbody = tabela.getElementsByTagName('tbody')[0];
-    const mediaNotas = calcularMediaNotas();
+    const corpoTabela = tabela.getElementsByTagName('tbody')[0];
+    const cabecalho = tabela.getElementsByTagName('thead')[0].getElementsByTagName('tr')[1];
+    const colunas = cabecalho.getElementsByTagName('th').length;
 
-    // Remove a linha totalizadora existente, se houver
-    const linhas = tbody.getElementsByTagName('tr');
-    if (linhas.length > 0 && linhas[linhas.length - 1].classList.contains('total')) {
-        tbody.removeChild(linhas[linhas.length - 1]);
+    // Verifica se a linha de média já foi adicionada
+    if (document.querySelector('#tabelaNotas tbody tr:last-child td:first-child').textContent === 'Média') {
+        alert('Linha de média já adicionada.');
+        return;
     }
 
-    // Cria a linha totalizadora
-    const linhaTotalizadora = document.createElement('tr');
-    linhaTotalizadora.classList.add('total');
-    linhaTotalizadora.innerHTML = `<td><strong>Total</strong></td>`;
-    mediaNotas.forEach(media => {
-        const td = document.createElement('td');
-        td.textContent = media.toFixed(1);
-        linhaTotalizadora.appendChild(td);
-    });
+    // Cria uma nova linha
+    const linhaTotal = document.createElement('tr');
+    const celula = document.createElement('td');
+    celula.textContent = 'Média';
+    linhaTotal.appendChild(celula);
 
-    tbody.appendChild(linhaTotalizadora);
+    // Adiciona células com a média das matérias
+    for (let i = 1; i < colunas; i++) {  // Garante que todas as colunas sejam percorridas
+        const celula = document.createElement('td');
+        let soma = 0;
+        let cont = 0;
+
+        // Soma as notas da coluna atual
+        for (const linha of corpoTabela.getElementsByTagName('tr')) {
+            const input = linha.getElementsByTagName('td')[i]?.getElementsByTagName('input')[0];
+            if (input && input.value !== '') {
+                soma += parseFloat(input.value);
+                cont++;
+            }
+        }
+        
+        // Calcula a média e define o conteúdo da célula
+        celula.textContent = cont ? (soma / cont).toFixed(1) : '-';
+        linhaTotal.appendChild(celula);
+    }
+
+    // Adiciona a linha ao corpo da tabela
+    corpoTabela.appendChild(linhaTotal);
 }
 
-// Função para adicionar a coluna com a média de cada aluno
+
 function adicionarColunaTotalizadora() {
     const tabela = document.getElementById('tabelaNotas');
-    const tbody = tabela.getElementsByTagName('tbody')[0];
-    const linhas = tbody.getElementsByTagName('tr');
-    const numNotas = linhas[0].getElementsByClassName('nota').length;
+    const cabecalho = tabela.getElementsByTagName('thead')[0].getElementsByTagName('tr')[1];
+    const corpoTabela = tabela.getElementsByTagName('tbody')[0];
+    const colunas = cabecalho.getElementsByTagName('th').length;
 
-    // Remove a coluna de média existente, se houver
-    for (let i = 0; i < linhas.length; i++) {
-        const linha = linhas[i];
-        if (linha.cells.length > numNotas + 1) {
-            linha.deleteCell(-1);
-        }
+    // Verifica se a coluna de média já foi adicionada
+    if (cabecalho.getElementsByTagName('th')[colunas - 1].textContent === 'Média') {
+        alert('Coluna de média já adicionada.');
+        return;
     }
 
-    // Adiciona a nova coluna a cada linha
-    for (let i = 0; i < linhas.length; i++) {
-        const linha = linhas[i];
-        const novaCelula = document.createElement('td');
-        if (i === 0) { // Adiciona o cabeçalho da coluna
-            novaCelula.innerHTML = '<strong>Média</strong>';
-        } else { // Adiciona a média de cada aluno
-            const inputs = linha.getElementsByClassName('nota');
-            const soma = Array.from(inputs).reduce((acc, input) => acc + parseFloat(input.value || 0), 0);
-            const media = inputs.length > 0 ? soma / inputs.length : 0;
-            novaCelula.textContent = media.toFixed(1);
+    // Adiciona uma nova célula no cabeçalho para a coluna de média
+    const cabecalhoNovaColuna = document.createElement('th');
+    cabecalhoNovaColuna.textContent = 'Média';
+    cabecalho.appendChild(cabecalhoNovaColuna);
+
+    // Adiciona a nova célula de média para cada linha do corpo da tabela
+    for (const linha of corpoTabela.getElementsByTagName('tr')) {
+        const celula = document.createElement('td');
+        let soma = 0;
+        let cont = 0;
+
+        // Ajuste do loop para percorrer todas as colunas relevantes
+        for (let i = 1; i < colunas - 1; i++) {
+            const input = linha.getElementsByTagName('td')[i]?.getElementsByTagName('input')[0];
+            if (input && input.value !== '') {
+                soma += parseFloat(input.value);
+                cont++;
+            }
         }
-        linha.appendChild(novaCelula);
+
+        // Calcula a média e define o conteúdo da nova célula
+        celula.textContent = cont ? (soma / cont).toFixed(1) : '-';
+        linha.appendChild(celula);
     }
 }
