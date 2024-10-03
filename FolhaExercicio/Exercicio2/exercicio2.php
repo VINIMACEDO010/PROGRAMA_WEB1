@@ -1,11 +1,34 @@
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $numero = isset($_POST['numero']) ? (int)$_POST['numero'] : 0;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Divisibilidade por 2</title>
+</head>
+<body>
 
-    if ($numero % 2 === 0) {
-        echo "<p style='color: green; font-size: 24px; font-weight: bold;'>Valor divisível por 2</p>";
-    } else {
-        echo "<p style='color: red; font-size: 24px; font-weight: bold;'>O valor não é divisível por 2</p>";
+    <h1>Verificar se o número é divisível por 2</h1>
+
+    <form action="" method="POST">
+        <label for="numero">Informe um número:</label>
+        <input type="number" name="numero" id="numero" required><br><br>
+
+        <input type="submit" value="Verificar">
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Receber o valor do número enviado pelo formulário
+        $numero = $_POST['numero'];
+
+        // Verificar se o número é divisível por 2
+        if ($numero % 2 == 0) {
+            echo "<h2>Valor divisível por 2.</h2>";
+        } else {
+            echo "<h2>O valor não é divisível por 2.</h2>";
+        }
     }
-}
-?>
+    ?>
+
+</body>
+</html>
