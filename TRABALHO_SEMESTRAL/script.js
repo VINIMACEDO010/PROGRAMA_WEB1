@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const feedbackTextarea = document.getElementById('feedback');
     const feedbackCounter = document.createElement('div');
-    const maxFeedbackLength = 300; // Limite de caracteres para o feedback
+    const maxFeedbackLength = 100; // Limite de caracteres para o feedback
     
     // Adicionar um contador de caracteres abaixo do campo de feedback
     feedbackCounter.id = 'feedback-counter';
