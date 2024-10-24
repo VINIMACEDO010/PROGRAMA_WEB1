@@ -67,5 +67,6 @@ $questions = getQuestions();
 
         <button type="submit">Enviar Avaliação</button>
     </form>
+    <script src="script.js"></script>
 </body>
 </html>
