@@ -1,27 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
-    const feedbackTextarea = document.getElementById('feedback');
-    const feedbackCounter = document.createElement('div');
-    const maxFeedbackLength = 100; // Limite de caracteres para o feedback
+    let errorMessage = document.getElementById('error-message');
     
-    // Adicionar um contador de caracteres abaixo do campo de feedback
-    feedbackCounter.id = 'feedback-counter';
-    feedbackCounter.textContent = `0 / ${maxFeedbackLength}`;
-    feedbackTextarea.parentNode.insertBefore(feedbackCounter, feedbackTextarea.nextSibling);
+    // Verifique se a mensagem de erro está no DOM, caso contrário, crie-a
+    if (!errorMessage) {
+        errorMessage = document.createElement('p');
+        errorMessage.id = 'error-message';
+        errorMessage.textContent = "Por favor, responda todas as perguntas antes de enviar.";
+        errorMessage.style.color = 'red';
+        errorMessage.style.marginTop = '10px';
+        errorMessage.style.fontWeight = 'bold';
+        errorMessage.style.display = 'none'; // Ocultar inicialmente
+        form.insertAdjacentElement('beforebegin', errorMessage);
+    }
 
-    // Atualizar o contador de caracteres ao digitar
-    feedbackTextarea.addEventListener('input', function() {
-        const feedbackLength = feedbackTextarea.value.length;
-        feedbackCounter.textContent = `${feedbackLength} / ${maxFeedbackLength}`;
-
-        if (feedbackLength > maxFeedbackLength) {
-            feedbackCounter.style.color = 'red';
-        } else {
-            feedbackCounter.style.color = 'black';
-        }
-    });
-
-    // Função para verificar se todas as perguntas foram respondidas
     function validateForm() {
         const questions = document.querySelectorAll('.question-block');
         let allAnswered = true;
@@ -39,17 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return allAnswered;
     }
 
-    // Adicionar uma confirmação antes do envio do formulário
     form.addEventListener('submit', function(event) {
         if (!validateForm()) {
             event.preventDefault(); // Impede o envio do formulário
-            alert('Por favor, responda todas as perguntas antes de enviar.');
-            return;
-        }
-
-        const confirmed = confirm('Tem certeza que deseja enviar suas respostas?');
-        if (!confirmed) {
-            event.preventDefault(); // Impede o envio do formulário se o usuário cancelar
+            errorMessage.style.display = 'block'; // Mostrar mensagem de erro
+            errorMessage.scrollIntoView({ behavior: 'smooth' }); // Focar na mensagem de erro
+        } else {
+            errorMessage.style.display = 'none'; // Ocultar mensagem de erro se todas as perguntas foram respondidas
         }
     });
 });

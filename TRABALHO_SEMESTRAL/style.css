@@ -1,21 +1,23 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f4f4f4;
+    background-color: #121212; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
 }
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: #e0e0e0; /* Título em um cinza mais claro */
 }
 
 form {
     max-width: 600px;
     margin: auto;
-    background-color: white;
+    background-color: #1e1e1e; /* Fundo do formulário */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .question-block {
@@ -45,14 +47,14 @@ form {
     padding: 10px;
     text-align: center;
     border-radius: 5px;
-    color: white;
+    color: #ffffff; /* Texto branco para os valores */
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s; /* Adiciona efeito de transformação */
 }
 
 /* Gradiente de cores para cada nota */
-.scale-label:nth-child(1) span { background-color: #ff0000; } /* Vermelho */
+.scale-label:nth-child(1) span { background-color: #d50000; } /* Vermelho */
 .scale-label:nth-child(2) span { background-color: #ff3300; }
 .scale-label:nth-child(3) span { background-color: #ff6600; }
 .scale-label:nth-child(4) span { background-color: #ff9900; }
@@ -65,21 +67,31 @@ form {
 .scale-label:nth-child(11) span { background-color: #00cc00; } /* Verde */
 
 .scale-label input:checked + span {
-    border: 2px solid black; /* Destaque para a opção selecionada */
+    border: 2px solid #ffffff; /* Destaque para a opção selecionada */
+    transform: scale(1.1); /* Aumenta ligeiramente o botão quando selecionado */
 }
 
 button {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Cor do botão */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s; /* Transição para o botão */
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Cor do botão ao passar o mouse */
+    transform: scale(1.05); /* Aumenta ligeiramente o botão ao passar o mouse */
+}
+
+#error-message {
+    display: none; /* Inicialmente oculta */
+    color: #ff0000; /* Vermelho para mensagens de erro */
+    font-weight: bold;
+    margin-top: 10px;
 }

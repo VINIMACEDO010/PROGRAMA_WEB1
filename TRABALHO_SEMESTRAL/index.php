@@ -10,7 +10,7 @@ function conectadb() {
 }
 
 function getQuestions() {
-    $conn = conectadb(); // Usando a função de conexão
+    $conn = conectadb();
 
     if (!$conn) {
         die("Erro ao conectar ao banco de dados.");
@@ -27,7 +27,7 @@ function getQuestions() {
         $questions[] = $row;
     }
 
-    pg_close($conn); // Fechar a conexão
+    pg_close($conn);
     return $questions;
 }
 
@@ -45,7 +45,7 @@ $questions = getQuestions();
 <body>
     <h1>Formulário de Avaliação</h1>
 
-    <form method="POST" action="submit.php">
+    <form id="evaluationForm" method="POST" action="submit.php">
         <?php foreach ($questions as $question): ?>
             <div class="question-block">
                 <label><?= htmlspecialchars($question['question_text']) ?></label>
