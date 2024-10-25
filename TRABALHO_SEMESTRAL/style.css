@@ -69,17 +69,18 @@ form:hover {
 
 
 /* Gradiente de cores para cada nota */
-.scale-label:nth-child(1) span { background-color: #ff5252; } /* Vermelho */
+.scale-label:nth-child(1) span { background-color: #ff5252; }  /* Vermelho */
 .scale-label:nth-child(2) span { background-color: #ff8a80; }
-.scale-label:nth-child(3) span { background-color: #ffb74d; }
-.scale-label:nth-child(4) span { background-color: #ffe57f; }
-.scale-label:nth-child(5) span { background-color: #ffff00; }
-.scale-label:nth-child(6) span { background-color: #c6ff00; }
-.scale-label:nth-child(7) span { background-color: #76ff03; }
-.scale-label:nth-child(8) span { background-color: #64ffda; }
-.scale-label:nth-child(9) span { background-color: #18ffff; }
-.scale-label:nth-child(10) span { background-color: #00e5ff; }
-.scale-label:nth-child(11) span { background-color: #00b0ff; } /* Azul */
+.scale-label:nth-child(3) span { background-color: #ffb74d; }  /* Laranja claro */
+.scale-label:nth-child(4) span { background-color: #ffe57f; }  /* Amarelo claro */
+.scale-label:nth-child(5) span { background-color: #ffff00; }   /* Amarelo */
+.scale-label:nth-child(6) span { background-color: #d4e157; }  /* Amarelo esverdeado */
+.scale-label:nth-child(7) span { background-color: #c6ff00; }  /* Verde limão */
+.scale-label:nth-child(8) span { background-color: #76ff03; }   /* Verde */
+.scale-label:nth-child(9) span { background-color: #64ffda; }   /* Verde água */
+.scale-label:nth-child(10) span { background-color: #45f7a1; }  /* Verde mais escuro */
+.scale-label:nth-child(11) span { background-color: #00ff00; }  /* Verde muito escuro */
+
 
 .scale-label input:checked + span {
     background-color: #00c853; /* Cor para opção selecionada */
