@@ -83,7 +83,7 @@ form:hover {
 
 
 .scale-label input:checked + span {
-    background-color: #00c853; /* Cor para opção selecionada */
+    background-color: #0400ff; /* Cor para opção selecionada */
     border: 2px solid #ffffff; /* Destaque para a opção selecionada */
     transform: scale(1.1); /* Aumenta ligeiramente ao selecionar */
 }
