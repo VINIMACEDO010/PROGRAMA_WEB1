@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     let errorMessage = document.getElementById('error-message');
-    
+
     // Verifique se a mensagem de erro está no DOM, caso contrário, crie-a
     if (!errorMessage) {
         errorMessage = document.createElement('p');
@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage.style.marginTop = '10px';
         errorMessage.style.fontWeight = 'bold';
         errorMessage.style.display = 'none'; // Ocultar inicialmente
+        errorMessage.style.textAlign = 'center'; // Centraliza a mensagem
         form.insertAdjacentElement('beforebegin', errorMessage);
     }
 
     function validateForm() {
+        console.log('Validando formulário...'); // Log de depuração
         const questions = document.querySelectorAll('.question-block');
         let allAnswered = true;
 
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     form.addEventListener('submit', function(event) {
+        console.log('Botão de enviar clicado...'); // Log de depuração
         if (!validateForm()) {
             event.preventDefault(); // Impede o envio do formulário
             errorMessage.style.display = 'block'; // Mostrar mensagem de erro

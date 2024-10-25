@@ -1,23 +1,36 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Roboto', sans-serif; /* Fonte moderna */
+    margin: 0;
+    padding: 20px;
     background-color: #121212; /* Fundo escuro */
-    color: #ffffff; /* Texto branco */
+    color: #e0e0e0; /* Texto em cinza claro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Centraliza verticalmente */
 }
 
 h1 {
-    text-align: center;
     margin-bottom: 20px;
-    color: #e0e0e0; /* Título em um cinza mais claro */
+    text-align: center;
+    font-size: 2.5rem; /* Tamanho do título maior */
+    color: #e0e0e0;
 }
 
 form {
     max-width: 600px;
-    margin: auto;
+    width: 100%; /* Permitir que o formulário ocupe a largura total em telas menores */
     background-color: #1e1e1e; /* Fundo do formulário */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 12px; /* Cantos arredondados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s; /* Efeitos de transição */
+}
+
+form:hover {
+    transform: translateY(-4px); /* Elevação ao passar o mouse */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* Sombras mais profundas ao passar o mouse */
 }
 
 .question-block {
@@ -46,48 +59,47 @@ form {
     width: 100%;
     padding: 10px;
     text-align: center;
-    border-radius: 5px;
-    color: #ffffff; /* Texto branco para os valores */
+    border-radius: 8px; /* Bordas mais arredondadas */
+    color: #ffffff; /* Texto branco */
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s; /* Adiciona efeito de transformação */
+    transition: background-color 0.3s, transform 0.2s; /* Transição suave */
 }
 
+
+
 /* Gradiente de cores para cada nota */
-.scale-label:nth-child(1) span { background-color: #d50000; } /* Vermelho */
-.scale-label:nth-child(2) span { background-color: #ff3300; }
-.scale-label:nth-child(3) span { background-color: #ff6600; }
-.scale-label:nth-child(4) span { background-color: #ff9900; }
-.scale-label:nth-child(5) span { background-color: #ffcc00; }
-.scale-label:nth-child(6) span { background-color: #ffff00; }
-.scale-label:nth-child(7) span { background-color: #ccff33; }
-.scale-label:nth-child(8) span { background-color: #99ff33; }
-.scale-label:nth-child(9) span { background-color: #66ff33; }
-.scale-label:nth-child(10) span { background-color: #33cc33; }
-.scale-label:nth-child(11) span { background-color: #00cc00; } /* Verde */
+.scale-label:nth-child(1) span { background-color: #ff5252; } /* Vermelho */
+.scale-label:nth-child(2) span { background-color: #ff8a80; }
+.scale-label:nth-child(3) span { background-color: #ffb74d; }
+.scale-label:nth-child(4) span { background-color: #ffe57f; }
+.scale-label:nth-child(5) span { background-color: #ffff00; }
+.scale-label:nth-child(6) span { background-color: #c6ff00; }
+.scale-label:nth-child(7) span { background-color: #76ff03; }
+.scale-label:nth-child(8) span { background-color: #64ffda; }
+.scale-label:nth-child(9) span { background-color: #18ffff; }
+.scale-label:nth-child(10) span { background-color: #00e5ff; }
+.scale-label:nth-child(11) span { background-color: #00b0ff; } /* Azul */
 
 .scale-label input:checked + span {
+    background-color: #00c853; /* Cor para opção selecionada */
     border: 2px solid #ffffff; /* Destaque para a opção selecionada */
-    transform: scale(1.1); /* Aumenta ligeiramente o botão quando selecionado */
+    transform: scale(1.1); /* Aumenta ligeiramente ao selecionar */
 }
 
 button {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #4CAF50; /* Cor do botão */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Bordas arredondadas */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px; /* Tamanho de fonte maior */
     transition: background-color 0.3s, transform 0.2s; /* Transição para o botão */
 }
 
-button:hover {
-    background-color: #45a049; /* Cor do botão ao passar o mouse */
-    transform: scale(1.05); /* Aumenta ligeiramente o botão ao passar o mouse */
-}
 
 #error-message {
     display: none; /* Inicialmente oculta */

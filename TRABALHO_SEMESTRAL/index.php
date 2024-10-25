@@ -1,32 +1,25 @@
 <?php
+// Código PHP para conectar ao banco de dados e obter perguntas
 function conectadb() {
-    $dbconn = false;
-
+    $dbconn = pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
     if (!$dbconn) {
-        $dbconn = pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
+        die("Erro ao conectar ao banco de dados.");
     }
-
-    return $dbconn; // Retorna a conexão
+    return $dbconn;
 }
 
 function getQuestions() {
     $conn = conectadb();
-
-    if (!$conn) {
-        die("Erro ao conectar ao banco de dados.");
-    }
-
     $result = pg_query($conn, "SELECT id, question_text FROM questions");
-
     if (!$result) {
         die("Erro na consulta: " . pg_last_error());
     }
-
+    
     $questions = [];
     while ($row = pg_fetch_assoc($result)) {
         $questions[] = $row;
     }
-
+    
     pg_close($conn);
     return $questions;
 }
@@ -35,7 +28,7 @@ $questions = getQuestions();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+< lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,6 +60,8 @@ $questions = getQuestions();
 
         <button type="submit">Enviar Avaliação</button>
     </form>
+
+    <p id="error-message" style="color: red; display: none;"></p>
     <script src="script.js"></script>
 </body>
 </html>
