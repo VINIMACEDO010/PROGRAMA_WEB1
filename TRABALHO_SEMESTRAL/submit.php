@@ -1,11 +1,6 @@
 <?php
 function conectadb() {
-    $dbconn = false;
-
-    if (!$dbconn) {
-        $dbconn = pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
-    }
-
+    $dbconn = pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
     return $dbconn; // Retorna a conexão
 }
 
@@ -20,22 +15,14 @@ $date = date('Y-m-d H:i:s');
 $device_id = 1; // Exemplo de dispositivo, pode ser dinâmico
 $sector_id = 1; // Exemplo de setor
 
-// Inicializar um array para armazenar as respostas
-$respostas = [];
+// Coletar respostas específicas
+$resposta_1 = $_POST['score_1'] ?? null;
+$resposta_2 = $_POST['score_2'] ?? null;
+$resposta_3 = $_POST['score_3'] ?? null;
 
-// Coletar respostas das perguntas
-foreach ($_POST as $key => $value) {
-    if (strpos($key, 'score_') === 0) {
-        $question_id = str_replace('score_', '', $key);
-        // Assumindo que as perguntas são numeradas sequencialmente (1, 2, 3,...)
-        $respostas[$question_id] = $value;
-    }
-}
-
-// Inserir a única linha com todas as respostas
+// Inserir as respostas na tabela
 $query = "INSERT INTO avaliacoes (setor_id, dispositivo_id, feedback, data_hora, resposta_1, resposta_2, resposta_3)
-          VALUES ($sector_id, $device_id, '$feedback', '$date', 
-          {$respostas[1]}, {$respostas[2]}, {$respostas[3]})"; // Modifique para o número correto de respostas
+          VALUES ($sector_id, $device_id, '$feedback', '$date', $resposta_1, $resposta_2, $resposta_3)";
 
 $result = pg_query($conn, $query);
 
