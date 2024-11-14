@@ -1,5 +1,5 @@
 <?php
-// Código PHP para conectar ao banco de dados e obter perguntas
+// Função para conectar ao banco de dados e obter perguntas
 function conectadb() {
     $dbconn = pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
     if (!$dbconn) {
@@ -28,7 +28,7 @@ $questions = getQuestions();
 ?>
 
 <!DOCTYPE html>
- <lang="pt-BR">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +60,14 @@ $questions = getQuestions();
 
         <button type="submit">Enviar Avaliação</button>
     </form>
+
+    <!-- Botão para redirecionar o administrador para a tela de login -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.location.href='login.php'" 
+                style="padding: 10px 20px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Acesso Administrador
+        </button>
+    </div>
 
     <p id="error-message" style="color: red; display: none;"></p>
     <script src="script.js"></script>

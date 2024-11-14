@@ -10,16 +10,14 @@ INSERT INTO questions (question_text) VALUES
 ('Como você avalia o atendimento da equipe médica?'),
 ('Como você avalia o atendimento da equipe de enfermagem?');
 
--- Criação da tabela de avaliações
+-- Criação da tabela de avaliações com colunas separadas para cada resposta
 CREATE TABLE avaliacoes (
     id SERIAL PRIMARY KEY,
-    pergunta_id INT REFERENCES questions(id),
     setor_id INT NOT NULL,
     dispositivo_id INT NOT NULL,
-    resposta INT CHECK (resposta BETWEEN 0 AND 10),
+    resposta_1 INT CHECK (resposta_1 BETWEEN 0 AND 10),
+    resposta_2 INT CHECK (resposta_2 BETWEEN 0 AND 10),
+    resposta_3 INT CHECK (resposta_3 BETWEEN 0 AND 10),
     feedback TEXT,
     data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-
-select * from avaliacoes
