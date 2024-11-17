@@ -91,4 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </body>
+<div>
+<button onclick="window.location.href='index.php'" style="padding: 8px 16px; font-size: 14px; width: 150px; display: block; margin: 0 auto;">Retornar</button>
+</div>
 </html>

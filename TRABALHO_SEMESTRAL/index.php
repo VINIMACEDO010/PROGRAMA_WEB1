@@ -34,8 +34,26 @@ $questions = getQuestions();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliação</title>
     <link rel="stylesheet" href="./style.css">
+    <style>
+        /* Estilo do emoji de administrador */
+        .admin-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+        }
+        .admin-icon:hover {
+            color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
+    <!-- Emoji de administrador -->
+    <a href="login.php" class="admin-icon" title="Acesso Administrador">👤</a>
+
     <h1>Formulário de Avaliação</h1>
 
     <form id="evaluationForm" method="POST" action="submit.php">
@@ -60,8 +78,6 @@ $questions = getQuestions();
 
         <button type="submit">Enviar Avaliação</button>
     </form>
-
-    <button onclick="window.location.href='login.php'">Acesso Administrador</button>
 
     <p id="error-message" style="color: red; display: none;"></p>
     <script src="script.js"></script>

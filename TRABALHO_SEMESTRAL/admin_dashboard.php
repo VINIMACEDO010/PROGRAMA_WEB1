@@ -11,23 +11,30 @@ function connectDB() {
 
 $conn = connectDB();
 
+if (!$conn) {
+    die("Erro ao conectar ao banco de dados.");
+}
+
+// Adicionar ou remover perguntas
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['new_question'])) {
+    if (!empty($_POST['new_question'])) {
         $question = $_POST['new_question'];
-        $addQuery = "ALTER TABLE responses ADD COLUMN response_" . strtolower(preg_replace('/\s+/', '_', $question)) . " TEXT";
-        pg_query($conn, $addQuery);
-        
         $insertQuery = "INSERT INTO questions (question_text) VALUES ($1)";
         pg_query_params($conn, $insertQuery, [$question]);
-    } elseif (isset($_POST['delete_question'])) {
+    } elseif (!empty($_POST['delete_question'])) {
         $questionId = $_POST['delete_question'];
+        // Remover pergunta
         $deleteQuery = "DELETE FROM questions WHERE id = $1";
-        pg_query_params($conn, $deleteQuery, [$questionId]);
+        $result = pg_query_params($conn, $deleteQuery, [$questionId]);
+        if (!$result) {
+            echo "<script>alert('Erro ao excluir pergunta: ela pode estar vinculada a respostas.')</script>";
+        }
     }
 }
 
-$questions = pg_query($conn, "SELECT * FROM questions");
-$responses = pg_query($conn, "SELECT * FROM responses");
+// Buscar perguntas e respostas
+$questions = pg_query($conn, "SELECT * FROM questions ORDER BY id");
+$responses = pg_query($conn, "SELECT id, question_id, device_id, response_value, feedback, created_at FROM responses ORDER BY created_at DESC");
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +52,7 @@ $responses = pg_query($conn, "SELECT * FROM responses");
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 50px auto;
             padding: 20px;
             background: #fff;
@@ -102,6 +109,10 @@ $responses = pg_query($conn, "SELECT * FROM responses");
             background-color: #4CAF50;
             color: white;
         }
+        .feedback {
+            color: #888;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -145,18 +156,29 @@ $responses = pg_query($conn, "SELECT * FROM responses");
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Respostas</th>
+                    <th>ID Pergunta</th>
+                    <th>Dispositivo</th>
+                    <th>Resposta</th>
+                    <th>Feedback</th>
+                    <th>Data</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($response = pg_fetch_assoc($responses)): ?>
                     <tr>
                         <td><?= htmlspecialchars($response['id']) ?></td>
-                        <td><?= htmlspecialchars(json_encode($response)) ?></td>
+                        <td><?= htmlspecialchars($response['question_id']) ?></td>
+                        <td><?= htmlspecialchars($response['device_id']) ?></td>
+                        <td><?= htmlspecialchars($response['response_value']) ?></td>
+                        <td class="feedback"><?= htmlspecialchars($response['feedback'] ?: 'Nenhum') ?></td>
+                        <td><?= htmlspecialchars($response['created_at']) ?></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
 </body>
+<div>
+<button onclick="window.location.href='index.php'" style="padding: 8px 16px; font-size: 14px; width: 150px; display: block; margin: 0 auto;">Sair</button>
+</div>
 </html>

@@ -29,5 +29,19 @@ INSERT INTO questions (question_text) VALUES
 ('Como você avalia o atendimento da equipe médica?'),
 ('Como você avalia o atendimento da equipe de enfermagem?');
 
+ALTER TABLE avaliacoes ADD COLUMN dispositivo_id INT NOT NULL;
+
+CREATE TABLE avaliacoes (
+    id SERIAL PRIMARY KEY,
+    setor_id INT NOT NULL,
+    dispositivo_id INT NOT NULL,  -- A coluna que falta
+	device_id INT NOT NULL,
+    feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS avaliacoes;
+
+
 
 
