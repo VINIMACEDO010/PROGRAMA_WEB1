@@ -1,25 +1,15 @@
 <?php
-// Iniciar sessão para gerenciar autenticação
 session_start();
-
-// Verificar se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Credenciais de administrador (exemplo simples)
-    $adminUsername = 'admin';
-    $adminPassword = '123';
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Obter dados do formulário de login
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    // Validar credenciais
-    if ($username === $adminUsername && $password === $adminPassword) {
-        // Se as credenciais estiverem corretas, redirecionar para a área de administração
-        $_SESSION['logged_in'] = true;
-        header('Location: admin_dashboard.php'); // Redireciona para o painel administrativo
+    if ($username === 'admin' && $password === '123') {
+        $_SESSION['admin_logged_in'] = true;
+        header('Location: admin_dashboard.php'); // Certifique-se de que o nome do arquivo está correto
         exit;
     } else {
-        $error = "Usuário ou senha incorretos.";
+        $error = "Usuário ou senha inválidos.";
     }
 }
 ?>
@@ -29,24 +19,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Administrador</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login do Administrador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        form {
+            margin: 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container" style="max-width: 400px; margin: auto; padding-top: 50px;">
-        <h2>Login Administrador</h2>
+    <div class="container">
+        <h1>Login do Administrador</h1>
         <?php if (!empty($error)): ?>
-            <p style="color: red;"><?= htmlspecialchars($error) ?></p>
+            <p><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
-        <form method="POST" action="login.php">
-            <div>
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div>
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+        <form method="POST">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+            
             <button type="submit">Entrar</button>
         </form>
     </div>

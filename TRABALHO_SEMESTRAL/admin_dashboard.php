@@ -1,58 +1,33 @@
 <?php
 session_start();
-
-// Verificar se o usuário está logado como administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header('Location: login.php');
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header('Location: admin_login.php');
     exit;
 }
 
-// Função para conectar ao banco de dados
-function conectadb() {
+function connectDB() {
     return pg_connect("host=localhost port=5432 dbname=avaliacao_hospital user=postgres password=admin");
 }
 
-// Adicionar uma nova pergunta
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_question'])) {
-    $newQuestion = $_POST['new_question'];
-    if (!empty($newQuestion)) {
-        $conn = conectadb();
-        $query = "INSERT INTO questions (question_text) VALUES ($1)";
-        $result = pg_query_params($conn, $query, [$newQuestion]);
-        pg_close($conn);
-        $message = $result ? "Pergunta adicionada com sucesso!" : "Erro ao adicionar pergunta.";
+$conn = connectDB();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['new_question'])) {
+        $question = $_POST['new_question'];
+        $addQuery = "ALTER TABLE responses ADD COLUMN response_" . strtolower(preg_replace('/\s+/', '_', $question)) . " TEXT";
+        pg_query($conn, $addQuery);
+        
+        $insertQuery = "INSERT INTO questions (question_text) VALUES ($1)";
+        pg_query_params($conn, $insertQuery, [$question]);
+    } elseif (isset($_POST['delete_question'])) {
+        $questionId = $_POST['delete_question'];
+        $deleteQuery = "DELETE FROM questions WHERE id = $1";
+        pg_query_params($conn, $deleteQuery, [$questionId]);
     }
 }
 
-// Remover uma pergunta
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_question_id'])) {
-    $questionId = (int)$_POST['delete_question_id'];
-    $conn = conectadb();
-    $query = "DELETE FROM questions WHERE id = $1";
-    $result = pg_query_params($conn, $query, [$questionId]);
-    pg_close($conn);
-    $message = $result ? "Pergunta removida com sucesso!" : "Erro ao remover pergunta.";
-}
-
-// Atualizar ID do dispositivo
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['device_id'])) {
-    $deviceId = (int)$_POST['device_id'];
-    $conn = conectadb();
-    $query = "UPDATE dispositivos SET dispositivo_id = $1 WHERE setor_id = 1"; // Exemplo de atualização para setor específico
-    $result = pg_query_params($conn, $query, [$deviceId]);
-    pg_close($conn);
-    $message = $result ? "ID do dispositivo atualizado com sucesso!" : "Erro ao atualizar o ID do dispositivo.";
-}
-
-// Obter todas as perguntas para exibição
-$conn = conectadb();
-$questionsResult = pg_query($conn, "SELECT id, question_text FROM questions");
-$questions = pg_fetch_all($questionsResult);
-
-// Obter todas as respostas e feedbacks
-$responsesResult = pg_query($conn, "SELECT * FROM avaliacoes ORDER BY data_hora DESC LIMIT 10");
-$responses = pg_fetch_all($responsesResult);
-pg_close($conn);
+$questions = pg_query($conn, "SELECT * FROM questions");
+$responses = pg_query($conn, "SELECT * FROM responses");
 ?>
 
 <!DOCTYPE html>
@@ -60,92 +35,128 @@ pg_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Administrador</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard do Administrador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+        button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Painel do Administrador</h1>
-    <?php if (isset($message)): ?>
-        <p style="color: green;"><?= htmlspecialchars($message) ?></p>
-    <?php endif; ?>
+    <div class="container">
+        <h1>Dashboard do Administrador</h1>
 
-    <!-- Seção para Adicionar Pergunta -->
-    <section>
-        <h2>Adicionar Nova Pergunta</h2>
+        <h2>Adicionar Pergunta</h2>
         <form method="POST">
-            <input type="text" name="new_question" placeholder="Digite a nova pergunta" required>
-            <button type="submit" name="add_question">Adicionar Pergunta</button>
+            <label for="new_question">Nova Pergunta:</label>
+            <input type="text" id="new_question" name="new_question" required>
+            <button type="submit">Adicionar</button>
         </form>
-    </section>
 
-    <!-- Seção para Remover Pergunta -->
-    <section>
-        <h2>Remover Pergunta Existente</h2>
-        <form method="POST">
-            <select name="delete_question_id" required>
-                <option value="">Selecione uma pergunta para remover</option>
-                <?php if ($questions): ?>
-                    <?php foreach ($questions as $question): ?>
-                        <option value="<?= htmlspecialchars($question['id']) ?>">
-                            <?= htmlspecialchars($question['question_text']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option disabled>Nenhuma pergunta encontrada</option>
-                <?php endif; ?>
-            </select>
-            <button type="submit">Remover Pergunta</button>
-        </form>
-    </section>
-
-    <!-- Seção para Atualizar ID do Dispositivo -->
-    <section>
-        <h2>Atualizar ID do Dispositivo</h2>
-        <form method="POST">
-            <label for="device_id">ID do Dispositivo:</label>
-            <input type="number" name="device_id" id="device_id" placeholder="Digite o ID do dispositivo" required>
-            <button type="submit">Atualizar</button>
-        </form>
-    </section>
-
-    <!-- Seção para Visualizar Respostas e Feedbacks -->
-    <section>
-        <h2>Respostas Recentes</h2>
-        <?php if ($responses): ?>
-            <table border="1">
-                <thead>
+        <h2>Gerenciar Perguntas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Pergunta</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($question = pg_fetch_assoc($questions)): ?>
                     <tr>
-                        <th>Data e Hora</th>
-                        <th>Setor ID</th>
-                        <th>Dispositivo ID</th>
-                        <th>Feedback</th>
-                        <th>Respostas</th>
+                        <td><?= htmlspecialchars($question['id']) ?></td>
+                        <td><?= htmlspecialchars($question['question_text']) ?></td>
+                        <td>
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="delete_question" value="<?= $question['id'] ?>">
+                                <button type="submit" style="background-color: red;">Remover</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($responses as $response): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($response['data_hora']) ?></td>
-                            <td><?= htmlspecialchars($response['setor_id']) ?></td>
-                            <td><?= htmlspecialchars($response['dispositivo_id']) ?></td>
-                            <td><?= htmlspecialchars($response['feedback']) ?></td>
-                            <td>
-                                <?php
-                                // Exibe as respostas (resposta_1, resposta_2, resposta_3)
-                                for ($i = 1; $i <= 3; $i++) {
-                                    echo "Pergunta $i: " . htmlspecialchars($response["resposta_$i"]) . "<br>";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>Nenhuma resposta encontrada.</p>
-        <?php endif; ?>
-    </section>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
 
-    <a href="logout.php">Sair</a>
+        <h2>Respostas Recebidas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Respostas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($response = pg_fetch_assoc($responses)): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($response['id']) ?></td>
+                        <td><?= htmlspecialchars(json_encode($response)) ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
