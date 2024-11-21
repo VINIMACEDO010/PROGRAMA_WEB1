@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head> 
 <body>
     <h1>Login</h1>
-    <form action="aula10.exercicio1.php" method="post">
+    <form action="Exercicio_1.php" method="post">
         <label for="login">Login</label>
         <input type="text" name="login" id="login" required><br><br>
 
