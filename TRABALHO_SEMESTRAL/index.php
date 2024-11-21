@@ -54,7 +54,10 @@ $questions = getQuestions();
     <!-- Emoji de administrador -->
     <a href="login.php" class="admin-icon" title="Acesso Administrador">👤</a>
 
-    <h1>Formulário de Avaliação</h1>
+    <h1>Avaliação - Hospital Regional Alto Vale</h1>
+    <p style="text-align: center; font-size: 14px; color: #555;">
+        Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.
+    </p>
 
     <form id="evaluationForm" method="POST" action="submit.php">
         <?php foreach ($questions as $question): ?>
