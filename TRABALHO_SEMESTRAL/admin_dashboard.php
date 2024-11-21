@@ -35,8 +35,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Buscar perguntas e respostas
 $questions = pg_query($conn, "SELECT * FROM questions ORDER BY id");
 $responses = pg_query($conn, "SELECT id, question_id, device_id, response_value, feedback, created_at FROM responses ORDER BY created_at DESC");
-?>
 
+// Calcular média das respostas por pergunta
+$averageQuery = "
+    SELECT 
+        q.id AS question_id,
+        q.question_text,
+        ROUND(AVG(r.response_value), 2) AS average_score
+    FROM 
+        questions q
+    LEFT JOIN 
+        responses r ON q.id = r.question_id
+    GROUP BY 
+        q.id, q.question_text
+    ORDER BY 
+        q.id;
+";
+$averageResults = pg_query($conn, $averageQuery);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -176,9 +193,29 @@ $responses = pg_query($conn, "SELECT id, question_id, device_id, response_value,
                 <?php endwhile; ?>
             </tbody>
         </table>
+
+        <h2>Média das Respostas por Pergunta</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pergunta</th>
+                    <th>Pergunta</th>
+                    <th>Média</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($average = pg_fetch_assoc($averageResults)): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($average['question_id']) ?></td>
+                        <td><?= htmlspecialchars($average['question_text']) ?></td>
+                        <td><?= htmlspecialchars($average['average_score'] ?? 'N/A') ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button onclick="window.location.href='index.php'" style="padding: 8px 16px; font-size: 14px; width: 150px; display: block; margin: 0 auto;">Sair</button>
     </div>
 </body>
-<div>
-<button onclick="window.location.href='index.php'" style="padding: 8px 16px; font-size: 14px; width: 150px; display: block; margin: 0 auto;">Sair</button>
-</div>
 </html>
