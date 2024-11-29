@@ -6,7 +6,7 @@
 $SALARIO1 = 1000;
 $SALARIO2 = 1000;
 
-echo "<p>O valor de SALARIO1 é: $SALARIO1</p>";
+echo "<p>O valor de SALARIO1 é: $SALARIO1</p>"; 
 echo "<p>O valor de SALARIO1 é: $SALARIO2</p>";
 
 if ($SALARIO1 > $SALARIO2) {
